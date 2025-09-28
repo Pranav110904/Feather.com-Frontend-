@@ -1,7 +1,7 @@
-import React from 'react'
-import LeftSidebar from '../components/LeftSidebar'
-import Feed from '../components/Feed'
-import RightSidebar from '../components/RightSidebar'
+
+import LeftSidebar from '../Layouts/LeftSidebar'
+import Feed from '../Layouts/Feed'
+import RightSidebar from '../Layouts/RightSidebar'
 const Home = () => {
   return (
     <div className='w-[66%] mx-auto flex justify-between '>

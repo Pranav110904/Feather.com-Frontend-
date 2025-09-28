@@ -12,6 +12,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
+    "browserslist": "^4.26.2",
+    "caniuse-lite": "^1.0.30001745",
     "framer-motion": "^11.11.17",
     "gsap": "^3.12.5",
     "prop-types": "^15.8.1",
