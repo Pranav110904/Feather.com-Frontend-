@@ -3,8 +3,13 @@ import './App.css'
 import Home from './Pages/Home'
 import { Route, Routes } from 'react-router-dom'
 import Login from './Pages/Login'
-import AccountSetup from './Pages/AccountSetup'
-import UsernamePage from './Pages/UsernameSetup'
+import AccountSetup from './Pages/AuthPages/AccountSetup'
+import UsernamePage from './Pages/AuthPages/UsernameSetup'
+import EmailVerification from './Pages/AuthPages/EmailVerification'
+import PasswordSetup from './Pages/AuthPages/PasswordSetup'
+import ProfilePicture from './Pages/AuthPages/ProfilePicture'
+
+
 function App() {
   
   return (
@@ -12,6 +17,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>} />
         <Route path="/setup/Account" element={<AccountSetup />} />
+        <Route path='/setup/EmailVerification' element={<EmailVerification />} />
+        <Route path='/setup/Password' element={<PasswordSetup />} /> 
+        <Route path='/setup/ProfilePicture' element={<ProfilePicture />} /> 
         <Route path="/setup/username" element={<UsernamePage />} />
         <Route path="/home" element={<Home />} />
       </Routes>

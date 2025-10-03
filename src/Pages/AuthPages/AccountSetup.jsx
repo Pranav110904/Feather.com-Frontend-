@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RoundedButton from "../components/RoundedButton";
+import RoundedButton from "../../components/RoundedButton";
+import { BsFeather } from "react-icons/bs";
 
 const AccountSetup = () => {
   const [formData, setFormData] = useState({
@@ -22,18 +24,37 @@ const AccountSetup = () => {
     const { name, email, month, day, year } = formData;
     if (name && email && month && day && year) {
       console.log(formData); // Debugging
-      navigate("/setup/username", { state: { ...formData } });
+      navigate("/setup/Email", { state: { ...formData } });
     } else {
       alert("Please fill out all fields");
     }
   };
 
+  const handleClose = () => {
+    navigate("/"); // redirect to login page
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen font-syne bg-[#1f1f1f] text-white px-4">
-      <div className="bg-black w-full max-w-lg h-auto sm:h-[80vh] rounded-3xl p-6 sm:p-10 overflow-x-hidden flex flex-col justify-start items-center">
+    <div className="flex flex-col items-center justify-center min-h-screen font-syne bg-[#1f1f1f] text-white px-4 sm:px-6 lg:px-8">
+      <div className="bg-black w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto rounded-3xl p-6 sm:p-10 overflow-x-hidden flex flex-col justify-start items-center relative">
         
+        {/* Feather Icon */}
+        <div className="w-full flex justify-center items-center">
+          <BsFeather className="text-white text-4xl sm:text-5xl lg:text-6xl mb-12 sm:mb-16 mt-6 sm:mt-10" />
+        </div>
+
+        {/* Cross Button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 left-4 text-gray-400 hover:text-white text-2xl sm:text-3xl font-bold"
+        >
+          ✕
+        </button>
+
         {/* Header */}
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Create your account</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-center">
+          Create your account
+        </h1>
 
         {/* Name Input */}
         <input
@@ -42,7 +63,7 @@ const AccountSetup = () => {
           value={formData.name}
           onChange={handleInputChange}
           placeholder="Name"
-          className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full mb-4"
+          className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full mb-4 text-sm sm:text-base"
         />
 
         {/* Email Input */}
@@ -52,13 +73,15 @@ const AccountSetup = () => {
           value={formData.email}
           onChange={handleInputChange}
           placeholder="Email"
-          className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full mb-6"
+          className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full mb-6 text-sm sm:text-base"
         />
 
         {/* Date of Birth Section */}
         <div className="w-full mb-6">
-          <label className="font-bold text-sm sm:text-base block mb-2">Date of birth</label>
-          <p className="text-xs sm:text-sm text-gray-300 mb-4">
+          <label className="font-bold text-sm sm:text-base block mb-2">
+            Date of birth
+          </label>
+          <p className="text-xs sm:text-sm text-gray-300 mb-4 leading-snug">
             This will not be shown publicly. Confirm your own age, even if this
             account is for a business, a pet, or something else.
           </p>
@@ -68,7 +91,7 @@ const AccountSetup = () => {
               name="month"
               value={formData.month}
               onChange={handleInputChange}
-              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full"
+              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full text-sm sm:text-base"
             >
               <option value="" disabled>Month</option>
               {[
@@ -83,7 +106,7 @@ const AccountSetup = () => {
               name="day"
               value={formData.day}
               onChange={handleInputChange}
-              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full"
+              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full text-sm sm:text-base"
             >
               <option value="" disabled>Day</option>
               {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
@@ -95,7 +118,7 @@ const AccountSetup = () => {
               name="year"
               value={formData.year}
               onChange={handleInputChange}
-              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full"
+              className="bg-[#353535] text-white px-4 py-3 rounded-md outline-none w-full text-sm sm:text-base"
             >
               <option value="" disabled>Year</option>
               {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -107,10 +130,9 @@ const AccountSetup = () => {
 
         {/* Submit Button */}
         <RoundedButton
-          
           label="Next"
           onClick={handleSubmit}
-          color={'bg-[#1D9BF0] text-white hover:bg-[#54b2ff]'}
+          color={"bg-[#1D9BF0] text-white hover:bg-[#54b2ff] w-full sm:w-auto px-6 py-3"}
         >
           Next
         </RoundedButton>

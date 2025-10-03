@@ -7,7 +7,7 @@ const AuthFooterLinks = () => {
   ];
 
   return (
-    <div className="bg-black text-gray-400 text-xs font-syne md:text-sm mt-16 font-medium py-4">
+    <div className="bg-black text-gray-400 text-xs font-syne md:text-sm  font-medium py-4">
       <div className="container mx-auto flex flex-wrap justify-center space-x-4">
         {links.map((link, idx) => (
           <a key={idx} href="#" className="hover:text-gray-200">{link}</a>
