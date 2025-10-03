@@ -8,6 +8,8 @@ import UsernamePage from './Pages/AuthPages/UsernameSetup'
 import EmailVerification from './Pages/AuthPages/EmailVerification'
 import PasswordSetup from './Pages/AuthPages/PasswordSetup'
 import ProfilePicture from './Pages/AuthPages/ProfilePicture'
+import LanguageSelection from './Pages/AuthPages/LanguageSelection'
+import CategorySelection from './Pages/AuthPages/CategorySelection'
 
 
 function App() {
@@ -19,8 +21,10 @@ function App() {
         <Route path="/setup/Account" element={<AccountSetup />} />
         <Route path='/setup/EmailVerification' element={<EmailVerification />} />
         <Route path='/setup/Password' element={<PasswordSetup />} /> 
-        <Route path='/setup/ProfilePicture' element={<ProfilePicture />} /> 
+        <Route path='/setup/ProfilePicture' element={<ProfilePicture />} />
+        <Route path='/setup/Language' element={<LanguageSelection />} />
         <Route path="/setup/username" element={<UsernamePage />} />
+        <Route path="/setup/CategorySelection" element={<CategorySelection />} />
         <Route path="/home" element={<Home />} />
       </Routes>
     </>
