@@ -11,7 +11,10 @@ const Login = () => {
   
   const navigate = useNavigate();
   return (
+    
+    
     <div className="bg-black h-screen flex flex-col justify-between">
+      
       <section className="flex flex-col md:flex-row items-center justify-center w-[92%] mx-auto h-full md:h-[80%]">
         
         {/* Logo Section */}

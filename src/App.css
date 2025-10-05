@@ -1,1 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+
+.background-image {
+  background-color: #000; /* fallback color */
+  background-image: url('/src//assets//bg.jpg'); /* replace with your image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+
+/* Glassmorphism Card */
+.glass-card {
+  background: rgba(0, 0, 0, 0.4); /* translucent dark base */
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+
