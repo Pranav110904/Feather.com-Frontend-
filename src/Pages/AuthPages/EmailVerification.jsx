@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import RoundedButton from "../../components/RoundedButton";
+import RoundedButton from "../../components/UIComponents/RoundedButton";
 import { BsFeather } from "react-icons/bs";
 
 const EmailVerification = () => {

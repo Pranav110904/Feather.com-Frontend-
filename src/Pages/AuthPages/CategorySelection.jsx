@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RoundedButton from "../../components/RoundedButton";
+import RoundedButton from "../../components/UIComponents/RoundedButton";
 
 const CategorySelection = ({ onComplete, onClose }) => {
   const availableCategories = [

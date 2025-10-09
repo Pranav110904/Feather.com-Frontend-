@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsFeather } from "react-icons/bs";
-import RoundedButton from "../../components/RoundedButton";
+import RoundedButton from "../../components/UIComponents/RoundedButton";
 
 const LanguageSelection = ({ onComplete, onClose }) => {
   const availableLanguages = [

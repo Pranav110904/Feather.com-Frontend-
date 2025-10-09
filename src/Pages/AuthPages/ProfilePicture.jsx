@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Camera } from "lucide-react";
 import { BsFeather } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import RoundedButton from "../../components/RoundedButton";
+import RoundedButton from "../../components/UIComponents/RoundedButton";
 
 const ProfilePictureSetup = ({ formData, onComplete }) => {
   const [imagePreview, setImagePreview] = useState(null);

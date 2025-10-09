@@ -4,7 +4,7 @@ import AuthFooterLinks from "../components/AuthComponents/AuthFooterLinks";
 import { BsFeather } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { DiApple } from "react-icons/di";
-import RoundedButton from "../components/RoundedButton"; 
+import RoundedButton from "../components/UIComponents/RoundedButton"; 
 import AuthDivider from "../components/AuthComponents/AuthDivider";
 
 const Login = () => {

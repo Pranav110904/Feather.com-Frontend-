@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { BsFeather } from "react-icons/bs";
-import RoundedButton from "../../components/RoundedButton";
+import RoundedButton from "../../components/UIComponents/RoundedButton";
 
 const UsernameSetup = () => {
   const [username, setUsername] = useState("");
