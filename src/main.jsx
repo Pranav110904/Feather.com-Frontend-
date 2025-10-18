@@ -7,9 +7,6 @@ import App from './App.jsx';
 createRoot(document.getElementById('root')).render(
 
 
-    <Router future={{ v7_relativeSplatPath: true }}>
+    <Router >
       <App />
-    </Router>
-  
-  
-);
+  </Router>);

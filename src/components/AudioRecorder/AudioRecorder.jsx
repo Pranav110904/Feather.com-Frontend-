@@ -1,6 +1,6 @@
 import React from "react";
 import AudioTimer from "./AudioTimer";
-import { ReactMic } from "react-mic";
+//import { ReactMic } from "react-mic";
 
 const ReactRecorder = () => {
   const [isRunning, setIsRunning] = React.useState(false);
@@ -48,7 +48,7 @@ const ReactRecorder = () => {
 
       {/* ReactMic component */}
       <div className="relative mt-4">
-        <ReactMic
+        {/* <ReactMic
           record={voice}
           className="sound-wave w-full"
           onStop={onStop}
@@ -64,7 +64,7 @@ const ReactRecorder = () => {
           strokeColor="#00ff88"
           backgroundColor="#222"
           mimeType="audio/webm"
-        />
+        />*/}
 
         {/* Sensitivity Glow */}
         {voice && (
