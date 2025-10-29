@@ -15,39 +15,56 @@ const AccountSetup = () => {
     year: "",
   });
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState(""); 
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    // Simple validation for presence of '@'
+    return email.includes("@");
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "email") {
+      if (value.length > 0 && !validateEmail(value)) {
+        setEmailError("Please enter a valid email address.");
+      } else {
+        setEmailError("");
+      }
+    }
   };
 
   const handleSubmit = async () => {
     const { name, email, month, day, year } = formData;
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address.");
+      toast("Please enter a valid email address.", { type: "error" });
+      return;
+    }
     if (name && email && month && day && year) {
       setLoading(true);
       const dob = `${year}-${month}-${day}`;
       try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, { name, email, dob });
-        toast(response.data.message, { type: "success" });  // Sonner toast
+        toast(response.data.message, { type: "success" });
         setTimeout(() => {
           navigate("/setup/EmailVerification", { state: { ...formData, userId: response.data.userId } });
         }, 1500);
       } catch (err) {
-        const msg = err.response?.data?.message ;
-        toast(msg, { type: "error" });  // Sonner toast
+        const msg = err.response?.data?.message;
+        toast(msg, { type: "error" });
       } finally {
         setLoading(false);
       }
-    } else {  // Sonner toast
+    } else {
       toast.info("Please fill out all fields", {
         style: {
-          fontFamily: "Syne, Arial, sans-serif", // Example font
-          fontSize: "1rem", // Example font size
-          
+          fontFamily: "Syne, Arial, sans-serif",
+          fontSize: "1rem",
         }
       });
-
     }
   };
 
@@ -108,8 +125,13 @@ const AccountSetup = () => {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="Email"
-            className="bg-[#35353590] backdrop-blur-md text-white px-4 py-3 rounded-md outline-none w-full mb-6 text-sm sm:text-base"
+            className={`bg-[#35353590] backdrop-blur-md text-white px-4 py-3 rounded-md outline-none w-full mb-2 text-sm sm:text-base ${emailError ? "border-red-500 border-2" : ""}`}
           />
+          {emailError && (
+            <div className="w-full text-xs sm:text-sm text-red-500 mb-6 -mt-2 pl-2 text-left">
+              {emailError}
+            </div>
+          )}
 
           {/* Date of Birth */}
           <div className="w-full mb-6">
