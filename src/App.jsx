@@ -10,7 +10,9 @@ import ProfilePicture from './Pages/AuthPages/ProfilePicture'
 import LanguageSelection from './Pages/AuthPages/LanguageSelection'
 import CategorySelection from './Pages/AuthPages/CategorySelection'
 //import ReactRecorder  from "./components/AudioRecorder/AudioRecorder"
-import Chat from './components/ChatApp/ChatApp'
+import Chat from './components/ChatApp/TestChat'
+import Test from './Pages/Test'
+
 
 
 function App() {
@@ -27,8 +29,9 @@ function App() {
         <Route path="/setup/username" element={<UsernamePage />} />
         <Route path="/setup/CategorySelection" element={<CategorySelection />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/chat" element={<Chat />} />
-       
+        <Route path="/Chat" element={<Test />} />
+        
+          
       </Routes>
     </>
   )

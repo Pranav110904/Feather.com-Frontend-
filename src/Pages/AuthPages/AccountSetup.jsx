@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RoundedButton from "../../components/UIComponents/RoundedButton";
 import { BsFeather } from "react-icons/bs";
+import axios from "axios";
+import { Toaster, toast } from 'sonner';  
+import { BarLoader } from "react-spinners";
 
 const AccountSetup = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +14,7 @@ const AccountSetup = () => {
     day: "",
     year: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -19,13 +22,32 @@ const AccountSetup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { name, email, month, day, year } = formData;
     if (name && email && month && day && year) {
-      console.log(formData);
-      navigate("/setup/Email", { state: { ...formData } });
-    } else {
-      alert("Please fill out all fields");
+      setLoading(true);
+      const dob = `${year}-${month}-${day}`;
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, { name, email, dob });
+        toast(response.data.message, { type: "success" });  // Sonner toast
+        setTimeout(() => {
+          navigate("/setup/EmailVerification", { state: { ...formData, userId: response.data.userId } });
+        }, 1500);
+      } catch (err) {
+        const msg = err.response?.data?.message ;
+        toast(msg, { type: "error" });  // Sonner toast
+      } finally {
+        setLoading(false);
+      }
+    } else {  // Sonner toast
+      toast.info("Please fill out all fields", {
+        style: {
+          fontFamily: "Syne, Arial, sans-serif", // Example font
+          fontSize: "1rem", // Example font size
+          
+        }
+      });
+
     }
   };
 
@@ -35,15 +57,22 @@ const AccountSetup = () => {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden">
+      {/* Sonner Toast Notifications */}
+      <Toaster  position="top-center" theme="dark" />
+
+      {/* Loading Spinner Overlay */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          <BarLoader color="#1D9BF0" size={50} />
+        </div>
+      )}
+
       {/* Background Layer */}
       <div className="background-image absolute top-0 left-0 w-full h-full"></div>
 
       {/* Content Layer */}
       <div className="flex flex-col items-center justify-center min-h-screen font-syne text-white px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Glass Card */}
         <div className="glass-card w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto rounded-3xl p-6 sm:p-10 overflow-x-hidden flex flex-col justify-start items-center relative shadow-2xl">
-          
           {/* Feather Icon */}
           <div className="w-full flex justify-center items-center">
             <BsFeather className="text-white text-4xl sm:text-5xl lg:text-6xl mb-12 sm:mb-16 mt-6 sm:mt-10" />

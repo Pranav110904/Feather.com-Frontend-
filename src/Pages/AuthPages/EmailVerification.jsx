@@ -33,7 +33,7 @@ const EmailVerification = () => {
       return;
     }
     console.log("Submitted code:", code);
-    navigate("/"); // change route as needed
+    navigate("/setup/Password"); // change route as needed
   };
 
   const handleClose = () => {

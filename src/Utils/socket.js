@@ -1,17 +1,8 @@
-// src/socket.js
 import { io } from "socket.io-client";
 
-// Change this to your backend URL if deployed
-const socket = io("http://localhost:8080", {
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+
+export const socket = io(SOCKET_URL, {
   withCredentials: true,
+  transports: ["websocket"], // ensures stable connection
 });
-
-socket.on("connect", () => {
-  console.log("✅ Connected to socket server:", socket.id);
-});
-
-socket.on("connect_error", (err) => {
-  console.error("❌ Socket connection failed:", err.message);
-});
-
-export default socket;
