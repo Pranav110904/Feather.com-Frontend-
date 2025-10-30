@@ -2,16 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import RoundedButton from "../../components/UIComponents/RoundedButton";
 import { BsFeather } from "react-icons/bs";
+import axios from "axios";
+import { Toaster, toast } from "sonner";
+import { BarLoader } from "react-spinners";
 
 const EmailVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email =
-    location.state?.email || location.state?.formData?.email;
+  const email = location.state?.email || location.state?.formData?.email;
 
   const [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const inputRef = useRef(null);
+
+  // Global loader: show if submitting or resending
+  const loading = isSubmitting || isResending;
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -22,52 +28,77 @@ const EmailVerification = () => {
     setCode(digits);
   };
 
-  const handleResend = () => {
-    // Optional: You can POST to your resend endpoint here if available.
-    // Example: fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/send-otp`, {method: "POST", body: JSON.stringify({ email })});
-    console.log("Resend verification code to:", email);
-    alert(`Verification code resent to ${email}`);
-  };
-
   const handleSubmit = async (e) => {
     e?.preventDefault();
     if (code.length !== 6) {
-      alert("Please enter the 6-digit verification code.");
+      toast("Please enter the 6-digit verification code.", { type: "error" });
       return;
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users/verify-Email`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, otp: code })
-        }
+        { email, otp: code }
       );
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        alert(data.message || "Verification successful.");
-        navigate("/setup/Password"); // Route after successful verification
+      const data = response.data;
+      if (response.status === 200 && data.success) {
+        toast(data.message || "Verification successful.", { type: "success" });
+        setTimeout(() => {
+          navigate("/setup/Password", { state: { email } });
+        }, 1000);
       } else {
-        alert(data.message || "Verification failed.");
+        toast(data.message || "Verification failed.", { type: "error" });
       }
     } catch (err) {
-      alert("Server error. Please try again later.");
+      toast(
+        err.response?.data?.message || "Server error. Please try again later.",
+        { type: "error" }
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Resend OTP handler
+  const handleResend = async () => {
+    setIsResending(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/resend-otp`,
+        { email }
+      );
+      const data = response.data;
+      if (response.status === 200 && data.success) {
+        toast(data.message || "A new OTP has been sent to your email.", { type: "success" });
+      } else {
+        toast(data.message || "OTP resend failed.", { type: "error" });
+      }
+    } catch (err) {
+      toast(
+        err.response?.data?.message || "Failed to resend OTP. Please try again later.",
+        { type: "error" }
+      );
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const handleClose = () => {
-    navigate("/"); // Redirect to login page
+    navigate("/");
   };
 
   return (
     <div className="relative w-screen h-screen overflow-hidden font-syne">
+      {/* Sonner Toaster for feedback */}
+      <Toaster position="top-center" theme="dark" />
+      
+      {/* BarLoader Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          <BarLoader color="#1D9BF0" size={50} />
+        </div>
+      )}
+
       {/* Background Layer */}
       <div className="background-image absolute top-0 left-0 w-full h-full"></div>
 
@@ -84,6 +115,7 @@ const EmailVerification = () => {
           <button
             onClick={handleClose}
             className="absolute top-4 left-4 text-gray-400 hover:text-white text-2xl sm:text-3xl font-bold"
+            disabled={loading}
           >
             ✕
           </button>
@@ -110,18 +142,18 @@ const EmailVerification = () => {
               value={code}
               onChange={handleChange}
               placeholder="Verification code"
-              className="w-full px-4 py-3 mb-3 bg-[#35353590] backdrop-blur-md text-white rounded-md border border-white/20 focus:outline-none focus:border-[#1D9BF0] focus:ring-2 focus:ring-[#1D9BF0] text-sm sm:text-base"
-              disabled={isSubmitting}
+              className="w-full px-4 py-3 mb-3 bg-[#35353590] backdrop-blur-md text-white rounded-md border border-white/20 focus:outline-none focus:border-[#1D9BF0] focus:ring-2 focus:ring-[#1D9BF0] text-md sm:text-base"
+              disabled={loading}
             />
 
             <div className="flex items-center justify-between mb-6">
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-[#1D9BF0] text-sm sm:text-base hover:underline"
-                disabled={isSubmitting}
+                className={`text-[#1D9BF0] text-sm sm:text-base hover:underline ${isResending ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={loading}
               >
-                Didn’t receive email?
+                {isResending ? "Resending..." : "Resend OTP"}
               </button>
               <div className="text-sm sm:text-base text-gray-400">
                 {code.length}/6
@@ -134,11 +166,11 @@ const EmailVerification = () => {
                 label={isSubmitting ? "Verifying..." : "Next"}
                 onClick={handleSubmit}
                 color={
-                  code.length === 6 && !isSubmitting
+                  code.length === 6 && !loading
                     ? "bg-[#1D9BF0]/80 text-white hover:bg-[#54b2ff] w-full sm:w-auto px-6 py-3 border border-[#1D9BF0]/40 backdrop-blur-md"
                     : "bg-gray-700/70 text-gray-300 w-full sm:w-auto px-6 py-3 cursor-not-allowed backdrop-blur-md"
                 }
-                disabled={code.length !== 6 || isSubmitting}
+                disabled={code.length !== 6 || loading}
               />
             </div>
           </form>

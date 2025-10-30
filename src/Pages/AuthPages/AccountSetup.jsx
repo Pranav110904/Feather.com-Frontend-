@@ -16,11 +16,23 @@ const AccountSetup = () => {
   });
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(""); 
+  const [nameError, setNameError] = useState("");
+  
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
-    // Simple validation for presence of '@'
-    return email.includes("@");
+    if (!email.includes("@")) {
+      return false;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+  
+  const validateName = (name) => {
+    if (name.length <= 2) {
+      return false;
+    }
+    return true;
   };
 
   const handleInputChange = (e) => {
@@ -34,15 +46,30 @@ const AccountSetup = () => {
         setEmailError("");
       }
     }
+    
+    if(name === "name"){
+      if(value.length > 0 && !validateName(value)){
+        setNameError("Please enter a valid name.");
+      }else{
+        setNameError("");
+      }
+    }
   };
 
   const handleSubmit = async () => {
+    
     const { name, email, month, day, year } = formData;
+    if(!validateName(name)){
+      setNameError("Please enter a valid name.");
+      toast("Please enter a valid name.", { type: "error" });
+      return;
+    }
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address.");
       toast("Please enter a valid email address.", { type: "error" });
       return;
     }
+    
     if (name && email && month && day && year) {
       setLoading(true);
       const dob = `${year}-${month}-${day}`;
@@ -115,8 +142,13 @@ const AccountSetup = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Name"
-            className="bg-[#35353590] backdrop-blur-md text-white px-4 py-3 rounded-md outline-none w-full mb-4 text-sm sm:text-base"
+            className={`bg-[#35353590] backdrop-blur-md text-white px-4 py-3 rounded-md outline-none w-full mb-2 text-sm sm:text-base ${nameError ? "border-red-500 border-2" : ""}`}
           />
+          {nameError && (
+            <div className="w-full text-xs sm:text-sm text-red-500 mb-2 -mt-2 pl-2 text-left">
+              {nameError}
+            </div>
+          )}
 
           {/* Email Input */}
           <input
