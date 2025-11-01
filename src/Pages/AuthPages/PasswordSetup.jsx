@@ -6,15 +6,14 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import { BarLoader } from "react-spinners";
+import useEmailStore from "../../app/Store";
 
 const PasswordSetup = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email || location.state?.formData?.email;
-  
+  const email = useEmailStore(state => state.email);
   console.log(email);
 
   const handleSubmit = async () => {

@@ -5,8 +5,12 @@ import { BsFeather } from "react-icons/bs";
 import axios from "axios";
 import { Toaster, toast } from 'sonner';  
 import { BarLoader } from "react-spinners";
+import useEmailStore from "../../app/Store";
 
 const AccountSetup = () => {
+  
+  const setEmail = useEmailStore(state => state.setEmail);
+  const email = useEmailStore(state => state.email);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,6 +21,8 @@ const AccountSetup = () => {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(""); 
   const [nameError, setNameError] = useState("");
+  
+  
   
   const navigate = useNavigate();
 
@@ -55,10 +61,13 @@ const AccountSetup = () => {
       }
     }
   };
+  
+
 
   const handleSubmit = async () => {
     
     const { name, email, month, day, year } = formData;
+    setEmail(formData.email);
     if(!validateName(name)){
       setNameError("Please enter a valid name.");
       toast("Please enter a valid name.", { type: "error" });

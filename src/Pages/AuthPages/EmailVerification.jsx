@@ -5,11 +5,12 @@ import { BsFeather } from "react-icons/bs";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import { BarLoader } from "react-spinners";
+import useEmailStore from "../../app/Store";
 
 const EmailVerification = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email || location.state?.formData?.email;
+  const email = useEmailStore(state => state.email);
+  console.log(email);
 
   const [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

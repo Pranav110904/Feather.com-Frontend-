@@ -15,7 +15,7 @@ const LanguageSelection = ({ onComplete, onClose }) => {
   ];
 
   const [selectedLanguage, setSelectedLanguage] = useState("English");
-
+      
   const handleLanguageSelect = (languageName) => setSelectedLanguage(languageName);
   const handleNext = () => selectedLanguage && onComplete && onComplete(selectedLanguage);
   const handleClose = () => (onClose ? onClose() : console.log("Flow closed/redirected."));
